@@ -1,0 +1,38 @@
+#!/bin/bash
+
+#### Preamble
+#---------------------------------------------
+
+#SBATCH --job-name=array_test
+
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=7g
+#SBATCH --time=1:00:00
+#SBATCH --array=10124,10259
+
+#  NOTE:  You must provide an account name to which you have access
+#         on the following line
+#SBATCH --account=
+#SBATCH --partition=standard
+#SBATCH --mail-type=NONE
+
+#### Load needed software
+#---------------------------------------------
+module purge
+module load freesurfer
+
+#### Print job specifications to output
+#---------------------------------------------
+
+my_job_header
+
+#### The actual work of the job
+#---------------------------------------------
+
+# Use the array task ID to select lines
+subj=$(grep ${SLURM_ARRAY_TASK_ID} subs.txt)
+
+echo "Processing subject ${subj}"
+# recon-all ${subj}
